@@ -1,0 +1,192 @@
+let widget = new ListWidget()
+const width=125
+const h=5
+widget.setPadding(10, 10, 10, 10)
+// widget.backgroundColor = new Color("#000000")
+widget.textColor = new Color("#fcfcfch")
+
+function getData() {
+  const fm = FileManager.iCloud()
+  const file = fm.bookmarkedPath("TimeTest1")
+  return fm.readString(file).split(" ")
+}
+
+let title = widget.addText("Sauerteig Timer")
+title.font = Font.boldSystemFont(16)
+title.textColor = new Color("#fcfcfch")
+
+function dataWidget() {
+  const tab = new ListWidget()
+  const StorageData = getData()
+  
+  const beginnTime = String(StorageData[0])
+  const endTime = String(StorageData[1])
+  const beginnDate = String(StorageData[2])
+  const endDate = String(StorageData[3])
+  
+//   let data1 = tab.addText(beginnTime)
+//   title.font = Font.systemFont(10)
+  
+  return {
+    beginnTime,
+    endTime,
+    beginnDate,
+    endDate
+   };
+ }
+
+const bTime = dataWidget(String).beginnTime
+const eTime = dataWidget(String).endTime
+const bDate = dataWidget(String).beginnDate
+const eDate = dataWidget(String).endDate
+
+function shortTime() {
+  const bTimeshort = bTime.getHours
+  return {
+    bTimeshort
+ };
+} 
+
+const now1 = new Date()
+const minutes1 = now1.getMinutes()
+
+const bShort = new Date(bTime).getHours();
+
+  widget.addSpacer(10)
+
+  let mainStack = widget.addStack()
+  let leftStack = mainStack.addStack()
+  leftStack.textColor = new Color("#fcfcfch")
+  leftStack.layoutVertically()
+  leftStack.addText("Start")
+  leftStack.addText("Ende")
+  leftStack.textColor = new Color("#fcfcfch")
+
+  mainStack.addSpacer(10)
+
+  let rightStack = mainStack.addStack()
+  rightStack.layoutVertically()
+  rightStack.addText(bDate)
+  rightStack.addText(eDate)
+  widget.addSpacer(10)
+
+// let sub = widget.addText(bTime)// 
+// sub.font = Font.systemFont(10)
+
+var app = (eTime)
+// Set the date we're counting down to
+var countDownDate = new Date(app).getTime();
+
+  // Get today's date and time
+  var now = new Date().getTime();
+    
+  // Find the distance between now and the count down date
+  let distance = countDownDate - now;
+    
+  // Time calculations for days, hours, minutes and seconds
+  var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+  var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+  var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    
+// let sub3 = widget.addText("noch:"+"  " +hours+":"+minutes+" Stunden")
+// sub3.font = Font.systemFont(13) 
+// 
+// if (distance < 0) {
+//   let sub3 = widget.addText("los, back!")
+//   let distance = ("00:00")
+//  }
+
+
+const test = new Date(bTime)
+const test1 = new Date(eTime)
+// let wdate = widget.addDate(test)
+// wdate.applyTimerStyle()
+
+// wdate.timeInterval = 0
+// wdate.font = Font.boldRoundedSystemFont(14)
+// wdate.textColor = new Color("F6C848")
+// if (distance < 0) {
+//   wdate.textcolor = new Color ("#000000")
+//   wdate.font = Font.boldRoundedSystemFont(1)
+// }
+
+
+let wdate1 = widget.addDate(test1)
+wdate1.applyTimerStyle()
+wdate1.font = Font.boldRoundedSystemFont(22)
+wdate1.textColor = new Color("F6C848")
+wdate1.leftAlignText()
+
+
+if (distance < 0) {
+  wdate1.textcolor = new Color ("#000000")
+  wdate1.font = Font.boldRoundedSystemFont(1)
+}
+// 
+if (distance < 0) {
+  let sub3 = widget.addText("los, back!")
+  sub3.font = Font.systemFont(20) 
+//   wdate = widget.addText("fertig")
+
+  let n = new Notification()
+  n.title = "Sauerteig Timer"
+//   n.subtitle = "ASG ist fertig!"
+  n.body = "ASG ist fertig! Viel Spaß beim Backen 🥳"
+  n.sound = "alert"
+  n.threadIdentifier = "ASG"
+  n.schedule()
+//   n.remove()
+}
+
+widget.addSpacer(9)
+
+let distance2 = hours
+let distance3 = minutes
+getwidget(test1-test, distance)
+
+function getwidget(total, haveGone) {
+  const imgw = widget.addImage(creatProgress(total,haveGone))
+  imgw.imageSize=new Size(width, h)
+// w.addSpacer(6)
+}
+
+function creatProgress(total,havegone){
+const context =new DrawContext()
+context.size=new Size(width, h)
+context.opaque=false
+context.respectScreenScale=true
+context.setFillColor(new Color("#48484b"))
+const path = new Path()
+path.addRoundedRect(new Rect(0, 0, width, h), 3, 2)
+context.addPath(path)
+context.fillPath()
+context.setFillColor(new Color("#ffd60a"))
+const path1 = new Path()
+path1.addRoundedRect(new Rect(0, 0, width*havegone/total, h), 3, 2)
+context.addPath(path1)
+context.fillPath()
+return context.getImage()
+}
+
+// let f1 = widget.addText(String(distance))
+// f1.font = Font.systemFont(7)
+
+// let count = ((now1.getHours()+1)*60+minutes1)
+// let f2 = widget.addText(String(count))
+// f2.font = Font.systemFont(7)
+
+// let f3 = widget.addText(String(hours))
+// f3.font = Font.systemFont(7)
+// let f3 = widget.addText(String(test1-test))
+// f3.font = Font.systemFont(7)
+
+// let f4 = widget.addText(String(minutes))
+// f4.font = Font.systemFont(7)
+
+if (!config.runsInWidget) widget.presentSmall()
+
+Script.setWidget(widget)
+Script.complete()
+
+
