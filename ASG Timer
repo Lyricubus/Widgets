@@ -128,7 +128,8 @@ if (distance < 0) {
   let sub3 = widget.addText("los, back!")
   sub3.font = Font.systemFont(20) 
 //   wdate = widget.addText("fertig")
-
+}
+if (now === app) {
   let n = new Notification()
   n.title = "Sauerteig Timer"
 //   n.subtitle = "ASG ist fertig!"
